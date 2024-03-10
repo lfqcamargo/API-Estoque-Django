@@ -17,7 +17,6 @@ class Local(models.Model):
         verbose_name_plural = 'Locais'
 
 class SubLocal(models.Model):
-    loes_id       = models.ForeignKey(Local, on_delete=models.CASCADE, db_column='LOES_ID', verbose_name='Local')
     sles_id       = models.AutoField(primary_key=True, db_column='SLES_ID', verbose_name='Sub-Local')
     sles_dsc      = models.CharField(max_length=100, null=False, blank=False, db_column='SLES_DSC', verbose_name='Descrição')
     sles_dat_cria = models.DateTimeField(auto_now_add=True, null=False, blank=False, db_column='SLES_DAT_CRIA', verbose_name='Data da Criação')
@@ -92,3 +91,4 @@ class Enderecamento(models.Model):
         db_table = 'ENES'
         verbose_name = 'Endereçamento'
         verbose_name_plural = 'Endereçamentos'
+        unique_together = ('loes_id', 'sles_id', 'coes_id', 'pres_id', 'poes_id')

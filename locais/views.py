@@ -2,8 +2,8 @@ from rest_framework import viewsets, generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .models import Local, SubLocal, Corredor, Prateleira, Posicao
-from .serializer import LocalSerializer, SubLocalSerializer, CorredorSerializer, PrateleiraSerializer, PosicaoSerializer
+from .models import Local, SubLocal, Corredor, Prateleira, Posicao, Enderecamento
+from .serializer import LocalSerializer, SubLocalSerializer, CorredorSerializer, PrateleiraSerializer, PosicaoSerializer, EnderecamentoSerializer
 
 class LocalViewSet(viewsets.ModelViewSet):
     """EXIBINDO TODOS LOCAIS"""
@@ -59,3 +59,14 @@ class PosicaoViewSet(viewsets.ModelViewSet):
 
     queryset = Posicao.objects.all()
     serializer_class = PosicaoSerializer
+
+class EnderecamentoViewSet(viewsets.ModelViewSet):
+    """EXIBINDO TODAS ENDEREÇAMENTOS"""
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+    search_fields = ['enes_id']
+    ordering_fields = ['enes_id']
+
+    queryset = Enderecamento.objects.all()
+    serializer_class = EnderecamentoSerializer

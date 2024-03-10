@@ -6,11 +6,11 @@ class LocalAdmin(admin.ModelAdmin):
     list_display_links = ('loes_id', 'loes_dsc')
     search_fields = ('loes_dsc',)
     list_per_page = 15
-    ordering = ('loes_id', 'loes_dsc')
+    ordering = ('loes_dsc',)
 
 class SubLocalAdmin(admin.ModelAdmin):
-    list_display = [ 'loes_id', 'sles_id', 'sles_dsc', 'sles_dat_cria', 'user_id', 'sles_dat_atua']
-    list_display_links = ( 'loes_id', 'sles_id', 'sles_dsc')
+    list_display = [ 'sles_id', 'sles_dsc', 'sles_dat_cria', 'user_id', 'sles_dat_atua']
+    list_display_links = ( 'sles_id', 'sles_dsc')
     search_fields = ('sles_id', 'sles_dsc')
     list_per_page = 15
     ordering = ('sles_dsc',)
@@ -36,8 +36,16 @@ class PosicaoAdmin(admin.ModelAdmin):
     list_per_page = 15
     ordering = ('poes_dsc',)
 
+class EnderecamentoAdmin(admin.ModelAdmin):
+    list_display = ['loes_id', 'sles_id', 'coes_id', 'pres_id', 'poes_id', 'ense_id', 'enes_dat_cria', 'user_id', 'enes_dat_atua']
+    list_display_links = ('loes_id', 'sles_id', 'coes_id', 'pres_id', 'poes_id', 'ense_id')
+    search_fields = ('ense_id',)
+    list_per_page = 15
+    ordering = ('ense_id',)
+
 admin.site.register(Local, LocalAdmin)
 admin.site.register(SubLocal, SubLocalAdmin)
 admin.site.register(Corredor, CorredorAdmin)
 admin.site.register(Prateleira, PrateleiraAdmin)
 admin.site.register(Posicao, PosicaoAdmin)
+admin.site.register(Enderecamento, EnderecamentoAdmin)
