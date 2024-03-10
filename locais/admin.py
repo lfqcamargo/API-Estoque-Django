@@ -1,3 +1,43 @@
 from django.contrib import admin
+from .models import Local, SubLocal, Corredor, Prateleira, Posicao, Enderecamento
 
-# Register your models here.
+class LocalAdmin(admin.ModelAdmin):
+    list_display = ['loes_id', 'loes_dsc', 'loes_dat_cria', 'user_id', 'loes_dat_atua']
+    list_display_links = ('loes_id', 'loes_dsc')
+    search_fields = ('loes_dsc',)
+    list_per_page = 15
+    ordering = ('loes_id', 'loes_dsc')
+
+class SubLocalAdmin(admin.ModelAdmin):
+    list_display = [ 'loes_id', 'sles_id', 'sles_dsc', 'sles_dat_cria', 'user_id', 'sles_dat_atua']
+    list_display_links = ( 'loes_id', 'sles_id', 'sles_dsc')
+    search_fields = ('sles_id', 'sles_dsc')
+    list_per_page = 15
+    ordering = ('sles_dsc',)
+
+class CorredorAdmin(admin.ModelAdmin):
+    list_display = ['coes_id', 'coes_dsc', 'coes_dat_cria', 'user_id', 'coes_dat_atua']
+    list_display_links = ('coes_id', 'coes_dsc')
+    search_fields = ('coes_id', 'coes_dsc')
+    list_per_page = 15
+    ordering = ('coes_dsc',)
+
+class PrateleiraAdmin(admin.ModelAdmin):
+    list_display = ['pres_id', 'pres_dsc', 'pres_dat_cria', 'user_id', 'pres_dat_atua']
+    list_display_links = ('pres_id', 'pres_dsc')
+    search_fields = ('pres_id', 'pres_dsc')
+    list_per_page = 15
+    ordering = ('pres_dsc',)
+
+class PosicaoAdmin(admin.ModelAdmin):
+    list_display = ['poes_id', 'poes_dsc', 'poes_dat_cria', 'user_id', 'poes_dat_atua']
+    list_display_links = ('poes_id', 'poes_dsc')
+    search_fields = ('poes_id', 'poes_dsc')
+    list_per_page = 15
+    ordering = ('poes_dsc',)
+
+admin.site.register(Local, LocalAdmin)
+admin.site.register(SubLocal, SubLocalAdmin)
+admin.site.register(Corredor, CorredorAdmin)
+admin.site.register(Prateleira, PrateleiraAdmin)
+admin.site.register(Posicao, PosicaoAdmin)
