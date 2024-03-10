@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from materiais.views import MateriaisViewSet, GruposViewSet, ControleMateriaisViewSet, ListaMateriaisPorGrupo
-from locais.views import LocalViewSet, SubLocalViewSet, CorredorViewSet, PrateleiraViewSet, PosicaoViewSet, EnderecamentoViewSet
+from locais.views import LocalViewSet, SubLocalViewSet, CorredorViewSet, PrateleiraViewSet, PosicaoViewSet, EnderecamentoViewSet, ListaEnderecamentosLocais, ListaEnderecamentosSubLocal
 
 router = routers.DefaultRouter()
 router.register('grupos', GruposViewSet, basename='Grupos')
@@ -20,4 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('grupo/<int:pk>/materiais/', ListaMateriaisPorGrupo.as_view()),
+    path('locais/<int:pk>/enderecamentos', ListaEnderecamentosLocais.as_view()),
+    path('sublocais/<int:pk>/enderecamentos', ListaEnderecamentosSubLocal.as_view()),
 ]

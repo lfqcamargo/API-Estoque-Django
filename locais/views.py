@@ -3,7 +3,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from .models import Local, SubLocal, Corredor, Prateleira, Posicao, Enderecamento
-from .serializer import LocalSerializer, SubLocalSerializer, CorredorSerializer, PrateleiraSerializer, PosicaoSerializer, EnderecamentoSerializer
+from .serializer import LocalSerializer, SubLocalSerializer, CorredorSerializer, PrateleiraSerializer, PosicaoSerializer, EnderecamentoSerializer, ListaEnderecamentoLocal, ListaEnderecamentoSubLocal
 
 class LocalViewSet(viewsets.ModelViewSet):
     """EXIBINDO TODOS LOCAIS"""
@@ -70,3 +70,29 @@ class EnderecamentoViewSet(viewsets.ModelViewSet):
 
     queryset = Enderecamento.objects.all()
     serializer_class = EnderecamentoSerializer
+
+class ListaEnderecamentosLocais(generics.ListAPIView):
+    """LISTANDO TODOS ENDEREÇAMENTOS POR LOCAL"""
+    authentication_classes = [BasicAuthentication]
+    permission_classes     = [IsAuthenticated]
+    filter_backends        = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+    search_fields          = ['loes_dsc', 'sles_dsc', 'coes_dsc', 'pres_dsc', 'poes_dsc']
+    ordering_fields        = ['loes_dsc', 'sles_dsc', 'coes_dsc', 'pres_dsc', 'poes_dsc']
+
+    def get_queryset(self):
+        queryset = Enderecamento.objects.filter(loes_id=self.kwargs['pk'])
+        return queryset
+    serializer_class = ListaEnderecamentoLocal
+
+class ListaEnderecamentosSubLocal(generics.ListAPIView):
+    """LISTANDO TODOS ENDEREÇAMENTOS POR SUB-LOCAL"""
+    authentication_classes = [BasicAuthentication]
+    permission_classes     = [IsAuthenticated]
+    filter_backends        = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+    search_fields          = ['loes_dsc', 'sles_dsc', 'coes_dsc', 'pres_dsc', 'poes_dsc']
+    ordering_fields        = ['loes_dsc', 'sles_dsc', 'coes_dsc', 'pres_dsc', 'poes_dsc']
+
+    def get_queryset(self):
+        queryset = Enderecamento.objects.filter(sles_id=self.kwargs['pk'])
+        return queryset
+    serializer_class = ListaEnderecamentoSubLocal
