@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Local, SubLocal, Corredor, Prateleira, Posicao, Enderecamento
+from .models import Local, SubLocal, Corredor, Prateleira, Posicao, Enderecamento, LocalMaterial
 
 class LocalAdmin(admin.ModelAdmin):
     list_display = ['loes_id', 'loes_dsc', 'loes_dat_cria', 'user_id', 'loes_dat_atua']
@@ -43,9 +43,26 @@ class EnderecamentoAdmin(admin.ModelAdmin):
     list_per_page = 15
     ordering = ('ense_id',)
 
+class LocalMaterialAdmin(admin.ModelAdmin):
+    list_display = ['loma_id', 'ense_id', 'mate_id', 'loma_dat_cria', 'user_id', 'loma_dat_atua']  
+    list_display_links = None
+    search_fields = ['loma_id', 'ense_id', 'mate_id']  
+    list_per_page = 15
+    ordering = ['loma_id']  
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 admin.site.register(Local, LocalAdmin)
 admin.site.register(SubLocal, SubLocalAdmin)
 admin.site.register(Corredor, CorredorAdmin)
 admin.site.register(Prateleira, PrateleiraAdmin)
 admin.site.register(Posicao, PosicaoAdmin)
 admin.site.register(Enderecamento, EnderecamentoAdmin)
+admin.site.register(LocalMaterial, LocalMaterialAdmin)

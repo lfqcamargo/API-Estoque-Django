@@ -2,8 +2,8 @@ from rest_framework import viewsets, generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .models import Local, SubLocal, Corredor, Prateleira, Posicao, Enderecamento
-from .serializer import LocalSerializer, SubLocalSerializer, CorredorSerializer, PrateleiraSerializer, PosicaoSerializer, EnderecamentoSerializer, ListaEnderecamentoLocal, ListaEnderecamentoSubLocal
+from .models import Local, SubLocal, Corredor, Prateleira, Posicao, Enderecamento, LocalMaterial
+from .serializer import LocalSerializer, SubLocalSerializer, CorredorSerializer, PrateleiraSerializer, PosicaoSerializer, EnderecamentoSerializer, ListaEnderecamentoLocal, ListaEnderecamentoSubLocal, LocalMaterialSerializer
 
 class LocalViewSet(viewsets.ModelViewSet):
     """EXIBINDO TODOS LOCAIS"""
@@ -71,6 +71,17 @@ class EnderecamentoViewSet(viewsets.ModelViewSet):
     queryset = Enderecamento.objects.all()
     serializer_class = EnderecamentoSerializer
 
+class LocalMaterialViewSet(viewsets.ReadOnlyModelViewSet):
+    """EXIBINDO TODOS SUBLOCAIS"""
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+    search_fields = ['loma_id']
+    ordering_fields = ['loma_id']
+
+    queryset = LocalMaterial.objects.all()
+    serializer_class = LocalMaterialSerializer
+
 class ListaEnderecamentosLocais(generics.ListAPIView):
     """LISTANDO TODOS ENDEREÇAMENTOS POR LOCAL"""
     authentication_classes = [BasicAuthentication]
@@ -96,3 +107,16 @@ class ListaEnderecamentosSubLocal(generics.ListAPIView):
         queryset = Enderecamento.objects.filter(sles_id=self.kwargs['pk'])
         return queryset
     serializer_class = ListaEnderecamentoSubLocal
+
+class ListaLocaisMateriais(generics.ListAPIView):
+    """LISTANDO TODOS ENDEREÇAMENTOS X MATERIAL"""
+    authentication_classes = [BasicAuthentication]
+    permission_classes     = [IsAuthenticated]
+    filter_backends        = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+    search_fields          = ['loes_dsc', 'sles_dsc', 'coes_dsc', 'pres_dsc', 'poes_dsc', 'mate_dsc']
+    ordering_fields        = ['loes_dsc', 'sles_dsc', 'coes_dsc', 'pres_dsc', 'poes_dsc', 'mate_dsc']
+
+    def get_queryset(self):
+        queryset = LocalMaterial.objects.filter(loma_id=self.kwargs['pk'])
+        return queryset
+    serializer_class = LocalMaterial

@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 
+from materiais.models import Material
+
 class Local(models.Model):
     loes_id       = models.AutoField(primary_key=True, db_column='LOES_ID', verbose_name='Local')
     loes_dsc      = models.CharField(max_length=100, null=False, blank=False, unique=True, db_column='LOES_DSC', verbose_name='Descrição')
@@ -92,3 +94,18 @@ class Enderecamento(models.Model):
         verbose_name = 'Endereçamento'
         verbose_name_plural = 'Endereçamentos'
         unique_together = ('loes_id', 'sles_id', 'coes_id', 'pres_id', 'poes_id')
+
+class LocalMaterial(models.Model):
+    loma_id       = models.AutoField(primary_key=True, db_column='LOMA_ID', verbose_name='Local do Material')
+    ense_id       = models.ForeignKey(Enderecamento, on_delete=models.CASCADE, db_column='ENSE_ID', verbose_name='Endereçamento')
+    mate_id       = models.ForeignKey(Material, on_delete=models.CASCADE, db_column='MATE_ID', verbose_name='Material')
+    loma_qtd      = models.FloatField(null=False, db_column='LOMA_QTD', verbose_name='Quantidade de Material')
+    loma_dat_cria = models.DateTimeField(auto_now_add=True, null=False, blank=False, db_column='LOMA_DAT_CRIA', verbose_name='Data da Criação')
+    user_id       = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL, db_column='USER_ID', verbose_name='Usuário')
+    loma_dat_atua = models.DateTimeField(auto_now=True, null=False, blank=False, db_column='LOMA_DAT_ATUA', verbose_name='Ultima Atualização')
+
+    class Meta():
+        db_table = 'LOMA'
+        verbose_name = 'Local Mateiral'
+        verbose_name_plural = 'Locais Materiais'
+        unique_together = ('ense_id', 'mate_id')
